@@ -1128,6 +1128,23 @@ const Servidor = (() => {
   const pendientesRecuperacion = new Map(); // correo → { fallos }
   let recuperacionVerificada = null;        // correo cuyo código de recuperación ya se verificó
 
+  /* ---------- 3.3b Dispositivos de confianza ----------
+     Cuando el código 2FA se verifica bien, este navegador recuerda el correo.
+     Las siguientes veces, en este mismo navegador, no se vuelve a pedir el código. */
+  const CLAVE_CONFIANZA = 'lumi.dispositivosConfiables';
+
+  function leerConfiables() {
+    try { return JSON.parse(localStorage.getItem(CLAVE_CONFIANZA)) || []; } catch { return []; }
+  }
+  function esConfiable(correo) {
+    return leerConfiables().includes(correo);
+  }
+  function marcarConfiable(correo) {
+    const lista = leerConfiables();
+    if (!lista.includes(correo)) lista.push(correo);
+    try { localStorage.setItem(CLAVE_CONFIANZA, JSON.stringify(lista)); } catch { /* sin almacenamiento */ }
+  }
+
   /* =================================================================
      3.4 API
      ================================================================= */
@@ -1222,8 +1239,11 @@ const Servidor = (() => {
     }
     intentos.delete(datos.correo); // entró bien: se reinician los fallos
 
-    // e) Verificación en dos pasos: se cierra la sesión y se envía un código al correo
-    if (data.user.user_metadata && data.user.user_metadata.dos_pasos) {
+    // e) Verificación en dos pasos: SOLO la primera vez.
+    //    Si la cuenta ya pasó el código antes (en cualquier dispositivo), entra directo con la contraseña.
+    const meta = data.user.user_metadata || {};
+    const yaVerificada = meta.dos_pasos_verificado === true || esConfiable(datos.correo);
+    if (meta.dos_pasos && !yaVerificada) {
       await sb.auth.signOut();
       const { error: errorCodigo } = await sb.auth.signInWithOtp({
         email: datos.correo,
@@ -1260,8 +1280,12 @@ const Servidor = (() => {
       return responder(401, { mensaje: 'Código incorrecto o vencido' });
     }
 
-    // c) Código correcto: la sesión queda abierta
+    // c) Código correcto: la sesión queda abierta y la cuenta queda marcada como verificada
+    //    en Supabase, para que no se vuelva a pedir el código en ningún dispositivo.
     pendientes2FA.delete(temporal);
+    marcarConfiable(temporal);
+    const { error: errorMarca } = await sb.auth.updateUser({ data: { dos_pasos_verificado: true } });
+    if (errorMarca) console.error(errorMarca); // si falla, igual queda recordado en este navegador
     return responder(200, { sesion: 'supabase' });
   }
 
@@ -1354,6 +1378,7 @@ const Servidor = (() => {
     await sb.auth.signOut();
     intentos.clear(); pendientes2FA.clear(); pendientesRecuperacion.clear();
     recuperacionVerificada = null;
+    try { localStorage.removeItem(CLAVE_CONFIANZA); } catch { /* sin almacenamiento */ }
   }
 
   return { registro, confirmar, login, verificarCodigo, sesion, salir, recuperar, restablecer, reiniciar };
@@ -1945,4 +1970,4 @@ if (location.hash === '#registro') {
 }
 </script>
 </body>
-</html>
+</html>
