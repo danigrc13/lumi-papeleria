@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<!--
+=====================================================================
+  BIENVENIDO — Página de bienvenida de Lumi Papelería
+  (marca ficticia para proyecto académico)
+  Elaborado por Daniela Rosales
+=====================================================================
+  ORGANIZACIÓN DEL ARCHIVO
+    1. ESTILOS (CSS)
+       1.1 Paleta de colores
+       1.2 Fondo de la página
+       1.3 Marca (logo y nombre)
+       1.4 Tarjeta central
+       1.5 Mascota y título
+       1.6 Beneficios de la cuenta
+       1.7 Botones
+       1.8 Firma
+    2. ESTRUCTURA (HTML)
+       2.1 Marca
+       2.2 Mascota (cuaderno sonriente)
+       2.3 Título y lema
+       2.4 Beneficios de la cuenta
+       2.5 Botones
+       2.6 Firma
+    3. MOSTRAR EL NOMBRE (JavaScript corto)
+
+  Los íconos están dibujados en SVG (dibujo con código), así que
+  no se necesita descargar ninguna imagen.
+=====================================================================
+-->
+<html lang="es">   <!-- lang="es": la página está en español -->
+<head>
+  <!-- UTF-8 permite mostrar tildes, ñ y signos como ¡ -->
+  <meta charset="UTF-8">
+  <!-- Ajusta la página al ancho de la pantalla (celular, tablet, PC) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Texto que aparece en la pestaña del navegador -->
+  <title>Bienvenid@ a Lumi Papelería</title>
+  <!-- Ícono de la pestaña: el mismo logo de Lumi -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='2' y='2' width='60' height='60' rx='16' fill='%23fde4ef'/%3E%3Crect x='16' y='13' width='28' height='38' rx='5' fill='%23a98be6'/%3E%3Cpath d='M24 24h13M24 31h13M24 38h9' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M49 8l2.2 5.3L56.5 15l-5.3 2.2L49 22.5l-2.2-5.3L41.5 15l5.3-1.7z' fill='%23e47fa8'/%3E%3C/svg%3E">
+
+  <!-- Fuente redondeada Nunito (la misma de la página de registro) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- =================================================================
+     1. ESTILOS (CSS)
+     ================================================================= -->
+<style>
+  /* ---------------------------------------------------------------
+     1.1 PALETA DE COLORES
+     Son los mismos colores de la página de registro (rosados,
+     morados y azules pastel). Si quieres cambiar un color, lo
+     cambias solo aquí y se actualiza en toda la página.
+     --------------------------------------------------------------- */
+  :root {
+    --rosa-claro: #fde4ef;
+    --rosa: #f6b8d1;
+    --rosa-fuerte: #e47fa8;
+    --lila-claro: #f3edfe;
+    --lila: #d9cbf8;
+    --morado: #9f86e0;
+    --morado-oscuro: #6d55b5;
+    --azul-claro: #e4f1fd;
+    --azul: #b5d6f7;
+    --azul-medio: #7fb1e6;
+    --texto: #3f3459;                                  /* texto normal (más oscuro: mejor lectura) */
+    --texto-suave: #6e6388;                            /* texto secundario con buen contraste */
+    --blanco: #ffffff;
+    --sombra: 0 18px 45px rgba(159, 134, 224, 0.22);   /* sombra morada suave de la tarjeta */
+  }
+
+  /* El ancho de cada elemento incluye su borde y su relleno */
+  * { box-sizing: border-box; }
+
+  /* ---------------------------------------------------------------
+     1.2 FONDO DE LA PÁGINA (igual que en la página de registro)
+       1. Patrón de papelería: lápiz, estrella, corazón y clip (blanco suave)
+       2. Dos manchas de luz: rosada arriba y azul abajo
+       3. Degradado base muy claro: rosado → lila → azul
+     --------------------------------------------------------------- */
+  html {
+    min-height: 100%;
+    background-color: var(--lila-claro);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' opacity='.6'%3E%3Cpath d='M22 74 58 38l9 9-36 36-12 3z'/%3E%3Cpath d='m53 43 9 9'/%3E%3Cpath d='m160 26 5 10 11 2-8 8 2 11-10-6-10 6 2-11-8-8 11-2z'/%3E%3Cpath d='M52 168c-9-7-16-12-16-20a8 8 0 0 1 16-3 8 8 0 0 1 16 3c0 8-7 13-16 20z'/%3E%3Cpath d='M150 130v36a10 10 0 0 0 20 0v-38a6 6 0 0 0-12 0v32'/%3E%3Ccircle cx='110' cy='104' r='3'/%3E%3Ccircle cx='196' cy='104' r='3'/%3E%3Ccircle cx='108' cy='200' r='3'/%3E%3C/g%3E%3C/svg%3E"),
+      radial-gradient(circle at 12% 18%, rgba(246, 184, 209, .7) 0, transparent 40%),
+      radial-gradient(circle at 88% 85%, rgba(181, 214, 247, .7) 0, transparent 42%),
+      linear-gradient(135deg, var(--rosa-claro) 0%, var(--lila-claro) 50%, var(--azul-claro) 100%);
+    background-size: 220px 220px, auto, auto, auto;  /* el patrón se repite cada 220 px */
+    background-attachment: fixed;                    /* el fondo se queda quieto al bajar */
+  }
+
+  /* Cuerpo de la página: marca arriba y tarjeta centrada */
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 24px 16px;
+    font-family: "Nunito", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    color: var(--texto);
+  }
+
+  /* Burbujas de color que flotan despacio detrás del contenido (más tenues) */
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: .35;
+    pointer-events: none;
+    animation: flotar 18s ease-in-out infinite alternate;
+  }
+  body::before {
+    width: 380px; height: 380px;
+    top: -80px; left: -60px;
+    background: radial-gradient(circle, var(--rosa-fuerte), transparent 70%);
+  }
+  body::after {
+    width: 420px; height: 420px;
+    bottom: -120px; right: -80px;
+    background: radial-gradient(circle, var(--azul-medio), transparent 70%);
+    animation-delay: -9s;
+  }
+
+  @keyframes flotar {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(60px, 40px) scale(1.15); }
+  }
+
+  /* ---------------------------------------------------------------
+     1.3 MARCA (logo y nombre arriba de la tarjeta)
+     --------------------------------------------------------------- */
+  .marca { display: flex; align-items: center; gap: 12px; }
+  .marca svg { width: 48px; height: 48px; filter: drop-shadow(0 6px 12px rgba(159, 134, 224, .35)); }
+  .marca-nombre { margin: 0; font-size: 1.45rem; font-weight: 800; color: var(--morado-oscuro); line-height: 1.1; }
+  .marca-nombre span { color: var(--rosa-fuerte); font-weight: 700; }
+
+  /* ---------------------------------------------------------------
+     1.4 TARJETA CENTRAL
+     --------------------------------------------------------------- */
+  .tarjeta {
+    width: 100%;
+    max-width: 580px;
+    background: var(--blanco);
+    border-radius: 26px;
+    padding: 36px 30px 28px;
+    box-shadow: var(--sombra);
+    text-align: center;
+    animation: aparecer .45s ease-out;    /* la tarjeta aparece suavemente */
+  }
+  @media (max-width: 480px) { .tarjeta { padding: 28px 18px 22px; } }
+
+  @keyframes aparecer {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ---------------------------------------------------------------
+     1.5 MASCOTA Y TÍTULO
+     --------------------------------------------------------------- */
+  .mascota {
+    width: 130px;
+    height: 130px;
+    filter: drop-shadow(0 10px 18px rgba(228, 127, 168, .35));
+    animation: rebote 2.4s ease-in-out infinite;   /* la mascota rebota sin parar */
+  }
+
+  @keyframes rebote {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+  }
+
+  /* Título "¡Bienvenid@ a Lumi, nombre!" */
+  h1 {
+    margin: 12px 0 6px;
+    font-size: 2.1rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--morado-oscuro);
+    word-break: break-word;               /* nombres largos no rompen la tarjeta */
+  }
+  h1 .destacado { color: var(--rosa-fuerte); }
+  @media (max-width: 480px) { h1 { font-size: 1.7rem; } }
+
+  /* Frase debajo del título */
+  .lema { margin: 0 0 26px; color: var(--texto-suave); font-size: 1.02rem; }
+
+  /* ---------------------------------------------------------------
+     1.6 BENEFICIOS DE LA CUENTA
+     Cuadrícula de 4 columnas; en celular pasan a 2 columnas.
+     --------------------------------------------------------------- */
+  .beneficios {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 26px;
+  }
+  @media (max-width: 480px) {
+    .beneficios { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .beneficio {
+    background: var(--lila-claro);
+    border: 1px solid var(--lila);
+    border-radius: 18px;
+    padding: 16px 8px 12px;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .beneficio:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(159, 134, 224, .2); }
+  .beneficio svg { width: 40px; height: 40px; }
+  .beneficio p { margin: 6px 0 0; font-size: .84rem; font-weight: 700; color: var(--morado-oscuro); line-height: 1.25; }
+
+  /* ---------------------------------------------------------------
+     1.7 BOTONES
+     Mismo estilo de los botones de la página de registro
+     --------------------------------------------------------------- */
+  .botones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .boton {
+    display: inline-block;
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--blanco);
+    text-decoration: none;
+    border-radius: 14px;
+    background: linear-gradient(90deg, var(--rosa-fuerte), var(--morado));
+    box-shadow: 0 8px 20px rgba(159, 134, 224, .35);
+    transition: transform .15s, box-shadow .2s;
+  }
+  .boton:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(159, 134, 224, .45); }
+  .boton:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(159, 134, 224, .3); }
+  .boton:focus-visible { outline: 3px solid var(--azul-medio); outline-offset: 3px; }
+  .boton-suave { background: var(--lila); color: var(--morado-oscuro); box-shadow: none; }
+  .boton-suave:hover { background: #cfbef5; box-shadow: none; }
+  @media (max-width: 480px) { .boton { width: 100%; text-align: center; } }
+
+  /* ---------------------------------------------------------------
+     1.8 FIRMA
+     --------------------------------------------------------------- */
+  .firma {
+    margin: 0;
+    padding-top: 18px;
+    border-top: 1px dashed var(--lila);
+    font-size: .92rem;
+    color: var(--texto-suave);
+  }
+  .firma strong { color: var(--rosa-fuerte); }
+  .firma small { display: block; margin-top: 4px; font-size: .78rem; }
+
+  /* Si la persona prefiere menos movimiento, se quitan las animaciones */
+  @media (prefers-reduced-motion: reduce) {
+    body::before, body::after, .mascota, .tarjeta { animation: none; }
+  }
+</style>
+</head>
+
+<body>
+<!-- =================================================================
+     2. ESTRUCTURA (HTML)
+     ================================================================= -->
+
+  <!-- 2.1 MARCA: el mismo logo de Lumi Papelería -->
+  <header class="marca">
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <linearGradient id="degradado-logo" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#f29ac0"/>
+          <stop offset=".55" stop-color="#a98be6"/>
+          <stop offset="1" stop-color="#86bdf0"/>
+        </linearGradient>
+      </defs>
+      <rect x="2" y="2" width="60" height="60" rx="16" fill="#ffffff"/>
+      <rect x="16" y="13" width="28" height="38" rx="5" fill="url(#degradado-logo)"/>
+      <path d="M24 24h13M24 31h13M24 38h9" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>
+      <g fill="#ffffff" stroke="#9f86e0" stroke-width="1.6">
+        <circle cx="16" cy="20" r="2.6"/>
+        <circle cx="16" cy="29" r="2.6"/>
+        <circle cx="16" cy="38" r="2.6"/>
+        <circle cx="16" cy="46" r="2.6"/>
+      </g>
+      <path d="M49 8l2.2 5.3L56.5 15l-5.3 2.2L49 22.5l-2.2-5.3L41.5 15l5.3-1.7z" fill="#e47fa8"/>
+    </svg>
+    <p class="marca-nombre">Lumi <span>Papelería</span></p>
+  </header>
+
+  <main class="tarjeta">
+
+    <!-- ---------------------------------------------------------
+         2.2 MASCOTA: cuaderno sonriente (dibujado en SVG)
+         Reemplaza la carita feliz y combina con el logo.
+         aria-hidden="true": es solo decorativo.
+         --------------------------------------------------------- -->
+    <svg class="mascota" viewBox="0 0 120 120" aria-hidden="true">
+      <defs>
+        <linearGradient id="degradado-mascota" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#f29ac0"/>
+          <stop offset=".55" stop-color="#a98be6"/>
+          <stop offset="1" stop-color="#86bdf0"/>
+        </linearGradient>
+      </defs>
+      <!-- Tapa del cuaderno -->
+      <rect x="24" y="14" width="74" height="94" rx="14" fill="url(#degradado-mascota)"/>
+      <!-- Argollas al lado izquierdo -->
+      <g fill="#ffffff" stroke="#9f86e0" stroke-width="2.5">
+        <circle cx="24" cy="32" r="5"/>
+        <circle cx="24" cy="52" r="5"/>
+        <circle cx="24" cy="72" r="5"/>
+        <circle cx="24" cy="92" r="5"/>
+      </g>
+      <!-- Ojos -->
+      <circle cx="49" cy="52" r="6" fill="#ffffff"/>
+      <circle cx="75" cy="52" r="6" fill="#ffffff"/>
+      <!-- Mejillas rosadas -->
+      <circle cx="41" cy="68" r="6" fill="#fde4ef" opacity=".85"/>
+      <circle cx="83" cy="68" r="6" fill="#fde4ef" opacity=".85"/>
+      <!-- Sonrisa -->
+      <path d="M48 68 Q62 86 76 68" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+      <!-- Destello rosado en la esquina (la "luz" de Lumi) -->
+      <path d="M100 4l3.3 8 8 2.6-8 3.3-3.3 8-3.3-8-8-3.3 8-2.6z" fill="#e47fa8" stroke="#ffffff" stroke-width="2"/>
+    </svg>
+
+    <!-- ---------------------------------------------------------
+         2.3 TÍTULO Y LEMA
+         El nombre de la persona se escribe en <span id="nombre-usuario">
+         --------------------------------------------------------- -->
+    <h1>¡Bienvenid@ a <span class="destacado">Lumi</span><span id="nombre-usuario"></span>!</h1>
+    <p class="lema">Tu cuenta está lista: ya puedes comprar, guardar favoritos y sumar puntos</p>
+
+    <!-- ---------------------------------------------------------
+         2.4 BENEFICIOS DE LA CUENTA
+         Cada beneficio es un dibujo SVG de 48 x 48 unidades y un texto.
+         --------------------------------------------------------- -->
+    <section class="beneficios" aria-label="Beneficios de tu cuenta">
+
+      <!-- Beneficio 1: ESCUDO con chulo → la cuenta está protegida -->
+      <div class="beneficio">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M24 4 40 10v12c0 10-7 18-16 22C15 40 8 32 8 22V10Z" fill="#9f86e0"/>
+          <path d="m17 24 5 5 9-10" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p>Cuenta protegida</p>
+      </div>
+
+      <!-- Beneficio 2: ESTRELLA → Puntos Lumi en cada compra -->
+      <div class="beneficio">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="m24 5 5.6 11.4 12.6 1.8-9.1 8.9 2.1 12.5L24 33.7l-11.2 5.9 2.1-12.5-9.1-8.9 12.6-1.8z" fill="#e47fa8"/>
+          <path d="M24 16v12M18 22h12" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <p>Puntos Lumi</p>
+      </div>
+
+      <!-- Beneficio 3: CAMIÓN → envíos a todo el país -->
+      <div class="beneficio">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <rect x="4" y="12" width="24" height="20" rx="3" fill="#7fb1e6"/>
+          <path d="M28 18h8l7 7v7H28z" fill="#7fb1e6"/>
+          <path d="M31 21h4l4 4h-8z" fill="#fff"/>
+          <circle cx="13" cy="35" r="5" fill="#6d55b5" stroke="#fff" stroke-width="2"/>
+          <circle cx="36" cy="35" r="5" fill="#6d55b5" stroke="#fff" stroke-width="2"/>
+        </svg>
+        <p>Envíos a todo el país</p>
+      </div>
+
+      <!-- Beneficio 4: SOBRE con chulo → el correo fue verificado -->
+      <div class="beneficio">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <rect x="5" y="11" width="32" height="24" rx="4" fill="#6d55b5"/>
+          <path d="m7 14 14 11 14-11" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="37" cy="34" r="8" fill="#e47fa8" stroke="#fff" stroke-width="2"/>
+          <path d="m33.5 34 2.5 2.5 4.5-4.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p>Correo verificado</p>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------
+         2.5 BOTONES
+         Regresan a index.html (la página de registro e inicio de sesión).
+         #registro le indica a index.html que abra la pantalla de registro.
+         --------------------------------------------------------- -->
+    <div class="botones">
+      <a href="index.html" class="boton">← Volver al inicio</a>
+      <a href="index.html#registro" class="boton boton-suave">Ir al registro</a>
+    </div>
+
+    <!-- ---------------------------------------------------------
+         2.6 FIRMA
+         --------------------------------------------------------- -->
+    <p class="firma">
+      Elaborado por <strong>Daniela Rosales</strong>
+      <small>Lumi Papelería es una marca ficticia para proyecto académico</small>
+    </p>
+  </main>
+
+  <!-- ---------------------------------------------------------
+       3. MOSTRAR EL NOMBRE
+       index.html envía el nombre en la dirección: bienvenido.html?nombre=...
+       --------------------------------------------------------- -->
+  <script>
+    // Leer el nombre que llega en la dirección
+    const nombre = new URLSearchParams(location.search).get('nombre');
+
+    // Si llegó un nombre, se escribe después de "Lumi" separado por coma
+    // (textContent evita que se inyecte código HTML)
+    if (nombre) {
+      document.getElementById('nombre-usuario').textContent = ', ' + nombre.trim();
+    }
+  </script>
+</body>
+</html>
